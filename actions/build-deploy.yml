@@ -39,16 +39,19 @@ jobs:
         --role=roles/logging.logWriter
         gcloud projects add-iam-policy-binding ${PROJECT_ID} \
         --member=serviceAccount:${{xia.sa-name}}@${PROJECT_ID}.iam.gserviceaccount.com \
-        --role=roles/run.invoker
+        --role=roles/${{xia.pub-role}}
         gcloud projects add-iam-policy-binding ${PROJECT_ID} \
         --member=serviceAccount:${{xia.sa-name}}@${PROJECT_ID}.iam.gserviceaccount.com \
-        --role=roles/${{xia.pub-role}}
+        --role=roles/${{xia.db-role}}
+        gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${{xia.sa-name}}@${PROJECT_ID}.iam.gserviceaccount.com \
+        --role=roles/${{xia.fs-role}}
 
-    - name: Topic Creation
+    - name: Subscription Creation
       continue-on-error: true
       run: |
         PROJECT_ID=$(gcloud config list --format 'value(core.account)' | sed 's/.*@\(.*\)\.iam\.gserviceaccount.*/\1/')
-        ${{xia.pub-create-topic}} --project ${PROJECT_ID}
+        ${{xia.pub-create-subscription}} --project ${PROJECT_ID}
 
     - name: Deploy
       run: |
@@ -58,5 +61,4 @@ jobs:
         --service-account ${{xia.sa-name}}@${PROJECT_ID}.iam.gserviceaccount.com \
         --region europe-west1 \
         --platform managed \
-        --no-allow-unauthenticated \
-        --update-env-vars XEED_USER=${{secrets.XEED_USER}},XEED_PASSWORD=${{secrets.XEED_PASSWORD}},XEED_DEST=$${PROJECT_ID},XEED_TOPIC=${{xia.topic}};
+        --no-allow-unauthenticated
