@@ -1,0 +1,14 @@
+{
+    "_module": "pyxeed",
+    "_class": "Seeder",
+    "publisher": {
+        "_type": "object",
+        "_class": "PubsubPublisher",
+        "_module": "xialib_pubsub",
+        "pub": {
+            "_type": "global",
+            "_name": "pubsub"
+        }
+    },
+    "_type": "object"
+}
