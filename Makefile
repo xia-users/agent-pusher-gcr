@@ -39,7 +39,6 @@ deploy: ## Deploy Cloud Run Image by using the last built image
 	@PROJECT_ID=$(shell gcloud config list --format 'value(core.project)'); \
 	CLOUD_RUN_REGION=$(shell gcloud config list --format 'value(run.region)'); \
 	CLOUD_RUN_PLATFORM=$(shell gcloud config list --format 'value(run.platform)'); \
-	${{xia.pub-create-topic}}; \
 	gcloud run deploy ${{xia.service-name}} \
 		--image gcr.io/$${PROJECT_ID}/${{xia.service-name}} \
 		--service-account ${{xia.sa-name}}@$${PROJECT_ID}.iam.gserviceaccount.com \

@@ -47,12 +47,6 @@ jobs:
         --member=serviceAccount:${{xia.sa-name}}@${PROJECT_ID}.iam.gserviceaccount.com \
         --role=roles/${{xia.fs-role}}
 
-    - name: Subscription Creation
-      continue-on-error: true
-      run: |
-        PROJECT_ID=$(gcloud config list --format 'value(core.account)' | sed 's/.*@\(.*\)\.iam\.gserviceaccount.*/\1/')
-        ${{xia.pub-create-subscription}} --project ${PROJECT_ID}
-
     - name: Deploy
       run: |
         PROJECT_ID=$(gcloud config list --format 'value(core.account)' | sed 's/.*@\(.*\)\.iam\.gserviceaccount.*/\1/')
