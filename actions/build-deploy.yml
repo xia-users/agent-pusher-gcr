@@ -30,6 +30,7 @@ jobs:
       run: |
         PROJECT_ID=$(gcloud config list --format 'value(core.account)' | sed 's/.*@\(.*\)\.iam\.gserviceaccount.*/\1/')
         gcloud iam service-accounts create ${{xia.sa-name}} \
+        --project ${PROJECT_ID} \
         --display-name "Cloud Run Pusher Agent"
 
     - name: Role Assign
