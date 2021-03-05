@@ -1,14 +1,15 @@
 {
-    "_module": "pyxeed",
-    "_class": "Seeder",
-    "publisher": {
+    "_module": "pyagent",
+    "adaptor": {
         "_type": "object",
-        "_class": "PubsubPublisher",
-        "_module": "xialib_pubsub",
-        "pub": {
+        "_class": "JsonAdaptor",
+        "location": "",
+        "_module": "xialib",
+        "fs": {
             "_type": "global",
-            "_name": "pubsub"
+            "_name": "gcsstorer"
         }
     },
+    "_class": "Pusher",
     "_type": "object"
 }

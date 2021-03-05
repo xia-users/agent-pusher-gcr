@@ -24,7 +24,7 @@ client.get_default_handler()
 client.setup_logging()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main():
     if request.method == 'GET':
         pusher = service_factory(object_config, global_connectors)

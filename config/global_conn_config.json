@@ -1,7 +1,7 @@
 {
-    "pubsub": {
+    "gcsstorer": {
+        "_module": "xialib_gcs",
         "_type": "object",
-        "_class": "PublisherClient",
-        "_module": "google.cloud.pubsub_v1"
+        "_class": "GcsStorer"
     }
 }
