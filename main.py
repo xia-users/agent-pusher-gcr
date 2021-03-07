@@ -2,6 +2,7 @@ import os
 import base64
 import gzip
 import json
+import logging
 from flask import Flask, render_template, request
 import google.cloud.logging
 from xialib.service import service_factory
@@ -14,6 +15,8 @@ with open(os.path.join(".", 'config', 'global_conn_config.json')) as fp:
     global_conn_config = json.load(fp)
 with open(os.path.join('.', 'config', 'object_config.json')) as fp:
     object_config = json.load(fp)
+with open(os.path.join('.', 'config', 'connected_topics.json')) as fp:
+    connected_topics = json.load(fp)
 
 # Global Object Factory
 global_connectors = service_factory(global_conn_config)
@@ -35,8 +38,12 @@ def main():
     if not envelope:
         return "no Pub/Sub message received", 204
     if not isinstance(envelope, dict) or 'message' not in envelope:
+        logging.warning("invalid Pub/Sub message format")
         return "invalid Pub/Sub message format", 204
     data_header = envelope['message']['attributes']
+    if data_header["topic_id"] not in connected_topics:
+        logging.warning("topic {} is not connected to me".format(data_header["topic_id"]))
+        return "topic {} is not connected to me".format(data_header["topic_id"]), 204
     data_body = json.loads(gzip.decompress(base64.b64decode(envelope['message']['data'])).decode())
 
     if pusher.push_data(data_header, data_body):
